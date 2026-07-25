@@ -1,0 +1,1070 @@
+System design is mainly divided into High-Level Design (HLD) and Low-Level Design (LLD). HLD explains the overall architecture and scalability, while LLD explains the internal code structure and object interactions.
+
+1. System Design Fundamentals
+
+Learn these concepts before separating into HLD and LLD:
+
+Functional requirements
+Non-functional requirements
+Capacity estimation
+Scalability
+Availability
+Reliability
+Maintainability
+Fault tolerance
+Performance and latency
+Throughput
+Consistency
+Security
+Cost optimization
+Vertical vs horizontal scaling
+Stateful vs stateless systems
+Synchronous vs asynchronous communication
+2. High-Level Design Concepts
+What is HLD?
+
+High-Level Design describes how the complete system is divided into services and how those services communicate.
+
+For example, in a chat application, HLD explains:
+
+Plain Text
+1
+Frontend
+2
+↓
+3
+Load Balancer
+4
+↓
+5
+API Gateway
+6
+↓
+7
+Authentication Service
+8
+Chat Service
+9
+Notification Service
+10
+File Service
+11
+↓
+12
+Database, Cache and Message Queue
+Show more lines
+HLD Concepts Checklist
+A. Requirement Analysis
+Functional requirements
+
+What the application must do.
+
+Example for a chat application:
+
+User registration and login
+Send and receive messages
+Create groups
+Upload files
+Show online status
+Send push notifications
+Non-functional requirements
+
+How well the system should work.
+
+Low latency
+High availability
+Scalability
+Reliability
+Security
+Fault tolerance
+Data consistency
+Maintainability
+B. Capacity Estimation
+
+Estimate the system load before designing it.
+
+Learn:
+
+Daily active users
+Requests per second
+Read-to-write ratio
+Storage requirements
+Network bandwidth
+Peak traffic
+Expected data growth
+
+Example:
+
+Plain Text
+1
+1 million users
+2
+100,000 daily active users
+3
+Each user sends 20 messages per day
+4
+ 
+5
+Messages per day:
+6
+100,000 × 20 = 2 million messages
+Show more lines
+C. Client-Server Architecture
+
+Understand how clients communicate with backend servers.
+
+Examples of clients:
+
+Web browser
+Mobile application
+Desktop application
+External system
+
+Learn:
+
+Request-response architecture
+Stateless server
+Stateful server
+Thin client vs thick client
+D. Network and Communication
+
+Important concepts:
+
+HTTP
+HTTPS
+TCP
+UDP
+DNS
+WebSocket
+WebRTC
+REST API
+GraphQL
+gRPC
+Server-Sent Events
+Long polling
+
+General use cases:
+
+Technology	Common useREST API	Standard web and mobile applications
+GraphQL	Flexible frontend data requirements
+gRPC	Internal microservice communication
+WebSocket	Real-time chat and notifications
+WebRTC	Video and audio communication
+Server-Sent Events	One-way live updates
+E. API Design
+
+Learn how services expose functionality.
+
+Topics:
+
+RESTful API design
+HTTP methods
+Status codes
+Request and response structure
+Pagination
+Filtering and sorting
+API versioning
+Authentication
+Authorization
+Rate limiting
+Idempotency
+API validation
+
+Example:
+
+HTTP
+1
+POST /api/v1/messages
+2
+GET /api/v1/conversations/{conversationId}/messages
+3
+DELETE /api/v1/messages/{messageId}
+Show more lines
+F. Load Balancing
+
+A load balancer distributes incoming requests across multiple servers.
+
+Learn:
+
+Round robin
+Weighted round robin
+Least connections
+IP hash
+Layer 4 load balancing
+Layer 7 load balancing
+Health checks
+Active-passive setup
+Active-active setup
+
+Example:
+
+Plain Text
+1
+Users
+2
+↓
+3
+Load Balancer
+4
+├── Server 1
+5
+├── Server 2
+6
+└── Server 3
+7
+ 
+Show more lines
+G. Database Design
+
+Learn the differences between:
+
+SQL databases
+
+Examples:
+
+PostgreSQL
+MySQL
+SQL Server
+
+Best for:
+
+Structured data
+Relationships
+Transactions
+Strong consistency
+NoSQL databases
+
+Examples:
+
+MongoDB
+Cassandra
+DynamoDB
+Redis
+
+Best for:
+
+Flexible schema
+Large-scale distributed data
+High write throughput
+Specific access patterns
+
+Important topics:
+
+Normalization
+Denormalization
+Indexing
+Replication
+Partitioning
+Sharding
+Transactions
+ACID properties
+BASE model
+Database constraints
+Read replicas
+Leader-follower replication
+Multi-leader replication
+H. Caching
+
+Caching reduces database load and improves response time.
+
+Learn:
+
+Client-side caching
+Browser caching
+CDN caching
+Application caching
+Distributed caching
+Database caching
+
+Important strategies:
+
+Cache-aside
+Read-through
+Write-through
+Write-back
+Write-around
+
+Cache replacement policies:
+
+LRU
+LFU
+FIFO
+
+Important challenges:
+
+Cache invalidation
+Cache consistency
+Cache stampede
+Cache penetration
+Cache eviction
+
+Example:
+
+Plain Text
+1
+Client
+2
+↓
+3
+Application Server
+4
+↓
+5
+Redis Cache
+6
+↓ Cache miss
+7
+Database
+Show more lines
+I. Content Delivery Network
+
+A CDN stores static content near users.
+
+Commonly cached:
+
+Images
+Videos
+CSS files
+JavaScript files
+Downloadable documents
+
+Learn:
+
+Edge locations
+Origin server
+Cache expiration
+Push CDN
+Pull CDN
+J. Message Queues and Event-Driven Architecture
+
+Message queues allow asynchronous communication.
+
+Examples:
+
+Kafka
+RabbitMQ
+Azure Service Bus
+Amazon SQS
+
+Use cases:
+
+Email notifications
+File processing
+Audit logging
+Video conversion
+Background jobs
+Data synchronization
+
+Important concepts:
+
+Producer
+Consumer
+Topic
+Queue
+Partition
+Consumer group
+Dead-letter queue
+Retry mechanism
+Message ordering
+Duplicate messages
+At-most-once delivery
+At-least-once delivery
+Exactly-once processing
+
+Example:
+
+Plain Text
+1
+Order Service
+2
+↓
+3
+Order Created Event
+4
+↓
+5
+Message Broker
+6
+├── Payment Service
+7
+├── Inventory Service
+8
+└── Notification Service
+Show more lines
+K. Monolith vs Microservices
+Monolithic architecture
+
+The complete application is deployed as one unit.
+
+Advantages:
+
+Easier to start
+Simple deployment
+Easier local development
+
+Disadvantages:
+
+Difficult to scale individual modules
+Tight coupling
+Large deployments
+Microservices architecture
+
+The application is divided into independent services.
+
+Advantages:
+
+Independent deployment
+Individual service scaling
+Better team ownership
+Technology flexibility
+
+Disadvantages:
+
+Network complexity
+Distributed transactions
+Difficult debugging
+Higher operational cost
+
+Also learn:
+
+Modular monolith
+Service-oriented architecture
+Service discovery
+Centralized configuration
+Distributed tracing
+Circuit breaker
+API gateway
+Service mesh
+L. Distributed Systems
+
+Important concepts:
+
+CAP theorem
+Consistency models
+Strong consistency
+Eventual consistency
+Read-after-write consistency
+Distributed transactions
+Two-phase commit
+Saga pattern
+Consensus
+Leader election
+Heartbeats
+Quorum
+Split-brain problem
+Clock synchronization
+Distributed locks
+Idempotency
+CAP theorem
+
+A distributed system can mainly prioritize two of the following during a network partition:
+
+Consistency
+Availability
+Partition tolerance
+
+Since network partitions can happen in distributed systems, systems generally make a trade-off between consistency and availability during the partition.
+
+M. Reliability and Fault Tolerance
+
+Learn:
+
+Redundancy
+Replication
+Automatic failover
+Health checks
+Retry with exponential backoff
+Timeout
+Circuit breaker
+Bulkhead pattern
+Graceful degradation
+Disaster recovery
+Backup and restore
+Recovery Point Objective
+Recovery Time Objective
+Multi-region deployment
+N. Security
+
+Important security concepts:
+
+Authentication
+Authorization
+OAuth 2.0
+OpenID Connect
+JWT
+Session-based authentication
+Role-Based Access Control
+Attribute-Based Access Control
+Encryption at rest
+Encryption in transit
+TLS
+Secrets management
+API security
+Rate limiting
+Input validation
+Audit logging
+OWASP vulnerabilities
+Principle of least privilege
+O. Observability
+
+Learn the three pillars:
+
+Logs
+Metrics
+Traces
+
+Additional concepts:
+
+Centralized logging
+Distributed tracing
+Correlation ID
+Health monitoring
+Alerting
+Dashboards
+Service Level Indicator
+Service Level Objective
+Service Level Agreement
+P. Common HLD Design Patterns
+API Gateway pattern
+Event-driven architecture
+Publish-subscribe pattern
+CQRS
+Event sourcing
+Saga pattern
+Circuit breaker
+Retry pattern
+Bulkhead pattern
+Sidecar pattern
+Strangler pattern
+Backend for Frontend
+Database per service
+Q. Cloud and Deployment Concepts
+Cloud computing basics
+Virtual machines
+Containers
+Docker
+Kubernetes
+Serverless architecture
+Auto-scaling
+Infrastructure as Code
+CI/CD
+Blue-green deployment
+Canary deployment
+Rolling deployment
+Multi-zone deployment
+Multi-region deployment
+3. Low-Level Design Concepts
+What is LLD?
+
+Low-Level Design explains the internal structure of an application, including classes, interfaces, methods, objects and their relationships.
+
+For example:
+
+Plain Text
+1
+User
+2
+Conversation
+3
+Message
+4
+Notification
+5
+ 
+6
+MessageService
+7
+NotificationService
+8
+MessageRepository
+Show more lines
+LLD Concepts Checklist
+A. Object-Oriented Programming
+
+You should understand:
+
+Class
+Object
+Interface
+Abstract class
+Encapsulation
+Abstraction
+Inheritance
+Polymorphism
+Composition
+Aggregation
+Association
+Method overloading
+Method overriding
+B. SOLID Principles
+S: Single Responsibility Principle
+
+A class should have only one primary responsibility.
+
+Plain Text
+1
+Bad:
+2
+UserService handles user creation, email and report generation.
+3
+ 
+4
+Better:
+5
+UserService
+6
+EmailService
+7
+ReportService
+Show more lines
+O: Open/Closed Principle
+
+A class should be open for extension but closed for modification.
+
+L: Liskov Substitution Principle
+
+A child class should be usable wherever its parent class is expected without breaking behavior.
+
+I: Interface Segregation Principle
+
+Avoid forcing a class to implement methods it does not need.
+
+D: Dependency Inversion Principle
+
+High-level modules should depend on abstractions, not concrete implementations.
+
+C. UML Diagrams
+
+Learn:
+
+Class diagram
+Sequence diagram
+Activity diagram
+State diagram
+Use-case diagram
+Component diagram
+Deployment diagram
+
+For LLD interviews, focus mainly on:
+
+Class diagrams
+Sequence diagrams
+State diagrams
+D. Class Relationships
+Association
+
+Two objects communicate with each other.
+
+Plain Text
+1
+Customer → Order
+2
+``
+Show more lines
+Aggregation
+
+A weak “has-a” relationship.
+
+Plain Text
+1
+Department has Employees
+2
+ 
+Show more lines
+
+Employees can exist without the department.
+
+Composition
+
+A strong “has-a” relationship.
+
+Plain Text
+1
+House has Rooms
+Show more lines
+
+Rooms belong to the house and normally do not exist independently in that model.
+
+Inheritance
+
+An “is-a” relationship.
+
+Plain Text
+1
+Car is a Vehicle
+2
+ 
+Show more lines
+
+In most practical designs, prefer composition when inheritance creates tight coupling.
+
+E. Design Patterns
+Creational patterns
+
+Used for object creation:
+
+Singleton
+Factory Method
+Abstract Factory
+Builder
+Prototype
+Structural patterns
+
+Used to organize classes and objects:
+
+Adapter
+Decorator
+Facade
+Proxy
+Composite
+Bridge
+Flyweight
+Behavioral patterns
+
+Used to manage object communication and behavior:
+
+Strategy
+Observer
+Command
+State
+Template Method
+Chain of Responsibility
+Iterator
+Mediator
+Memento
+Visitor
+Most important interview patterns
+
+Prioritize:
+
+Factory
+Strategy
+Observer
+Builder
+Adapter
+Decorator
+State
+Command
+Chain of Responsibility
+Singleton
+F. Clean Code Principles
+Meaningful names
+Small and focused methods
+Avoid duplicated logic
+Avoid deeply nested conditions
+Use constants instead of magic values
+Separate business logic from infrastructure
+Handle errors correctly
+Use dependency injection
+Write testable code
+Prefer composition over inheritance
+Follow separation of concerns
+G. Layered Architecture
+
+A common application structure:
+
+Plain Text
+1
+Controller Layer
+2
+↓
+3
+Service Layer
+4
+↓
+5
+Repository Layer
+6
+↓
+7
+Database
+8
+ 
+Show more lines
+
+Responsibilities:
+
+Controller: Receives requests and returns responses
+Service: Contains business logic
+Repository: Handles data access
+Model/Entity: Represents domain data
+DTO: Transfers data between layers
+Mapper: Converts entities to DTOs and vice versa
+H. Domain Modeling
+
+Learn how to identify:
+
+Entities
+Value objects
+Aggregates
+Aggregate roots
+Repositories
+Domain services
+Domain events
+Invariants
+
+Example in an e-commerce system:
+
+Plain Text
+1
+Order → Aggregate root
+2
+OrderItem → Entity
+3
+ShippingAddress → Value object
+4
+OrderPlaced → Domain event
+5
+OrderRepository → Repository
+Show more lines
+I. Error Handling
+Custom exceptions
+Centralized error handling
+Validation errors
+Business exceptions
+Infrastructure exceptions
+Error codes
+Retryable vs non-retryable errors
+Fail-fast validation
+Graceful failure
+J. Concurrency and Thread Safety
+
+Important topics:
+
+Process vs thread
+Race conditions
+Deadlocks
+Starvation
+Mutex
+Semaphore
+Locks
+Atomic operations
+Thread-safe collections
+Immutable objects
+Optimistic locking
+Pessimistic locking
+K. Testing
+Unit testing
+Integration testing
+End-to-end testing
+Mocking
+Test doubles
+Dependency injection
+Test-driven development
+Behavior-driven development
+
+A good LLD should allow individual components to be tested independently.
+
+L. Common LLD Interview Problems
+
+Practice designing:
+
+Parking lot
+Elevator system
+Library management system
+Movie ticket booking system
+ATM
+Vending machine
+Meeting room scheduler
+Hotel booking system
+Food delivery system
+Cab booking system
+Chess game
+Snake and ladder
+Notification system
+Logging framework
+Rate limiter
+Splitwise
+File system
+Cache system
+4. HLD vs LLD
+Area	HLD	LLDFocus	Overall system architecture	Internal component design
+Main question	How will the entire system work?	How will the code be structured?
+Scope	Services and infrastructure	Classes and methods
+Includes	APIs, databases, queues, cache	Classes, interfaces, patterns
+Diagrams	Architecture and data-flow diagrams	Class and sequence diagrams
+Scaling	Major concern	Limited focus
+Technology choices	Usually included	Implementation-oriented
+Audience	Architects and senior engineers	Developers
+Example	Chat service uses WebSocket and Redis	MessageService.sendMessage()
+5. Example: Chat Application
+HLD perspective
+
+You would design:
+
+API Gateway
+Authentication service
+User service
+Chat service
+WebSocket gateway
+Notification service
+File storage service
+Redis for online status
+Message queue for notifications
+Database for conversations and messages
+CDN for media files
+Monitoring and logging
+Plain Text
+1
+Client
+2
+↓
+3
+Load Balancer
+4
+↓
+5
+API Gateway
+6
+├── Authentication Service
+7
+├── User Service
+8
+├── Chat Service
+9
+├── WebSocket Gateway
+10
+└── File Service
+11
+↓
+12
+Database + Redis + Message Broker + Object Storage
+Show more lines
+LLD perspective
+
+You would design classes such as:
+
+Plain Text
+1
+User
+2
+Conversation
+3
+Message
+4
+Attachment
+5
+Notification
+6
+ 
+7
+ChatService
+8
+MessageService
+9
+NotificationService
+10
+ 
+11
+MessageRepository
+12
+ConversationRepository
+13
+UserRepository
+Show more lines
+
+Possible relationships:
+
+Plain Text
+1
+Conversation
+2
+├── Participants
+3
+└── Messages
+4
+ 
+5
+Message
+6
+├── Sender
+7
+├── Content
+8
+├── Attachments
+9
+└── DeliveryStatus
+Show more lines
+
+Potential patterns:
+
+Factory: Create text, image or file messages
+Strategy: Select notification delivery method
+Observer: Notify connected users about new messages
+State: Manage sent, delivered, read and deleted statuses
+Repository: Separate database access from business logic
+6. Recommended Learning Order
+Phase 1: Foundations
+Functional and non-functional requirements
+OOP concepts
+SOLID principles
+Networking basics
+REST API design
+SQL and NoSQL databases
+Phase 2: LLD
+UML diagrams
+Class relationships
+Design patterns
+Layered architecture
+Domain modeling
+Error handling
+Testing
+Solve common LLD problems
+Phase 3: HLD
+Capacity estimation
+Load balancing
+Caching
+Database scaling
+Message queues
+Microservices
+Distributed systems
+Security
+Observability
+Cloud deployment
+Phase 4: Complete System Designs
+
+Practice:
+
+URL shortener
+Chat application
+Notification system
+Video streaming platform
+Food delivery application
+E-commerce platform
+Social media feed
+File storage system
+Ride-booking application
+Payment system
+7. Simple Way to Remember
+Plain Text
+1
+HLD = Services + Database + Cache + Queue + Scaling + Security
+2
+ 
+3
+LLD = Classes + Interfaces + Methods + Relationships + Patterns
+Show more lines
+
+For system-design interviews, follow this progression:
+
+Plain Text
+1
+Requirements
+2
+→ Estimation
+3
+→ APIs
+4
+→ Data model
+5
+→ High-level architecture
+6
+→ Component deep dive
+7
+→ Scaling
+8
+→ Failure handling
+9
+→ Security
+10
+→ Trade-offs
